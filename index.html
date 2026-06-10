@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hassan rehman // engineer + artist</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0D1117;
+  --bg2:     #161B22;
+  --bg3:     #1C2330;
+  --border:  #30363D;
+  --fg:      #C9D1D9;
+  --dim:     #6E7681;
+  --green:   #56D364;
+  --blue:    #79C0FF;
+  --yellow:  #E3B341;
+  --red:     #F85149;
+  --cyan:    #39D0D8;
+  --purple:  #BC8CFF;
+  --white:   #F0F6FC;
+  --mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* scanline overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px, transparent 2px,
+    rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px
+  );
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* grid paper bg */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(48,54,61,0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(48,54,61,0.18) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 500;
+  background: rgba(13,17,23,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  height: 52px;
+  display: flex; align-items: center; gap: 0;
+}
+.nav-logo {
+  font-size: 13px; font-weight: 700;
+  color: var(--white);
+  text-decoration: none;
+  margin-right: auto;
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-logo .prompt { color: var(--green); }
+.nav-logo .cursor {
+  display: inline-block; width: 8px; height: 14px;
+  background: var(--blue);
+  animation: blink 1.1s step-end infinite;
+  vertical-align: middle;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.nav-links { display: flex; }
+.nav-links a {
+  color: var(--dim);
+  text-decoration: none;
+  font-size: 12px;
+  padding: 0 18px;
+  height: 52px;
+  display: flex; align-items: center;
+  border-left: 1px solid var(--border);
+  transition: color 0.15s, background 0.15s;
+  letter-spacing: 0.04em;
+}
+.nav-links a:hover { color: var(--cyan); background: rgba(57,208,216,0.05); }
+.nav-links a span.key {
+  color: var(--yellow);
+  margin-right: 5px;
+  font-size: 11px;
+}
+
+/* ── LAYOUT ── */
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative; z-index: 1;
+}
+
+section { padding: 100px 0; }
+
+/* ── SECTION LABELS ── */
+.sec-label {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px;
+}
+.sec-label::before { content: '//'; color: var(--green); opacity: 0.7; }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding-top: 52px;
+}
+.hero-window {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+}
+.win-bar {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.dots { display: flex; gap: 6px; }
+.dot { width: 12px; height: 12px; border-radius: 50%; }
+.dot-r { background: #FF5F56; }
+.dot-y { background: #FFBD2E; }
+.dot-g { background: #27C93F; }
+.win-title { font-size: 12px; color: var(--dim); margin: 0 auto; }
+.win-body { padding: 40px 48px 48px; }
+
+.hero-top {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 6px;
+}
+.hero-prompt { color: var(--green); font-size: 13px; }
+.hero-cmd { color: var(--blue); font-size: 13px; }
+
+.hero-name {
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-weight: 700;
+  line-height: 1.0;
+  color: var(--white);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+.hero-name .hl-green { color: var(--green); }
+.hero-name .hl-blue  { color: var(--blue);  }
+
+.hero-role {
+  font-size: 15px;
+  color: var(--dim);
+  margin-bottom: 36px;
+}
+.hero-role .tag {
+  display: inline-flex; align-items: center;
+  padding: 2px 10px;
+  border: 1px solid var(--border);
+  color: var(--cyan);
+  font-size: 12px;
+  margin: 2px 3px 2px 0;
+  border-radius: 3px;
+}
+
+.hero-content {
+  display: grid;
+  grid-template-columns: 1fr 460px;
+  gap: 40px;
+  align-items: start;
+}
+.hero-main { min-width: 0; }
+
+.hero-bio {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px; line-height: 1.75;
+  color: var(--fg);
+  max-width: 620px;
+  margin-bottom: 40px;
+  border-left: 2px solid var(--green);
+  padding-left: 20px;
+}
+.hero-bio em { color: var(--yellow); font-style: normal; }
+
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.hero-map-panel {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: rgba(13,17,23,0.6);
+  padding: 16px;
+  font-size: 11px;
+}
+.map-header {
+  color: var(--dim);
+  margin-bottom: 10px;
+  letter-spacing: 0.04em;
+}
+.map-header .cmd { color: var(--green); }
+.world-map-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2000 / 857;
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--bg);
+  line-height: 0;
+}
+.world-map-img,
+.world-map-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.map-legend {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.map-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--dim);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+.map-legend-item em {
+  color: var(--fg);
+  font-style: normal;
+}
+.map-legend-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.map-legend-dot.home { background: var(--green); box-shadow: 0 0 6px rgba(86,211,100,0.5); }
+.map-legend-dot.work { background: var(--cyan); }
+.map-legend-dot.client { background: var(--blue); }
+.map-legend-dot.client-alt { background: var(--purple); }
+.map-legend-dot.europe { background: var(--yellow); box-shadow: 0 0 6px rgba(227,179,65,0.45); }
+.btn {
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 10px 22px;
+  text-decoration: none;
+  border-radius: 4px;
+  border: 1px solid;
+  transition: all 0.18s;
+  display: inline-flex; align-items: center; gap: 8px;
+  letter-spacing: 0.04em;
+}
+.btn-green { color: var(--green); border-color: var(--green); background: rgba(86,211,100,0.06); }
+.btn-green:hover { background: rgba(86,211,100,0.14); box-shadow: 0 0 16px rgba(86,211,100,0.2); }
+.btn-blue  { color: var(--blue);  border-color: var(--blue);  background: rgba(121,192,255,0.06); }
+.btn-blue:hover  { background: rgba(121,192,255,0.14); box-shadow: 0 0 16px rgba(121,192,255,0.2); }
+
+/* ── ABOUT ── */
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+  align-items: start;
+}
+.code-block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.code-bar {
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 16px;
+  font-size: 11px; color: var(--dim);
+  display: flex; align-items: center; gap: 8px;
+}
+.code-bar .file-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--yellow); }
+.code-body { padding: 24px; line-height: 1.8; }
+.ln { color: var(--border); user-select: none; min-width: 28px; display: inline-block; text-align: right; margin-right: 20px; }
+.k { color: var(--purple); }
+.s { color: var(--green); }
+.v { color: var(--blue); }
+.c { color: var(--dim); font-style: italic; }
+.n { color: var(--white); }
+.p { color: var(--fg); }
+.num { color: var(--yellow); }
+
+.about-prose {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px; line-height: 1.8; color: var(--fg);
+}
+.about-prose p { margin-bottom: 20px; }
+.about-prose strong { color: var(--white); font-weight: 500; }
+
+.stat-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin-top: 32px;
+}
+.stat-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 16px;
+  transition: border-color 0.2s;
+}
+.stat-box:hover { border-color: var(--cyan); }
+.stat-num { font-size: 1.8rem; font-weight: 700; color: var(--white); }
+.stat-num span { color: var(--cyan); }
+.stat-label { font-size: 11px; color: var(--dim); margin-top: 2px; letter-spacing: 0.08em; }
+
+/* ── SKILLS ── */
+#skills { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.skills-table {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 6px; overflow: hidden;
+  margin-top: 48px;
+}
+.skill-col {
+  background: var(--bg2);
+  padding: 28px 28px 32px;
+}
+.skill-col-head {
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 20px;
+  padding-bottom: 10px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.skill-col-head .dot-col { width: 8px; height: 8px; border-radius: 50%; }
+.skill-item {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.skill-name { font-size: 13px; color: var(--fg); }
+.skill-bar {
+  width: 80px; height: 4px;
+  background: var(--border);
+  border-radius: 2px; overflow: hidden;
+}
+.skill-fill {
+  height: 100%; border-radius: 2px;
+  transition: width 1s ease;
+}
+
+/* ── PROJECTS ── */
+.projects-list { margin-top: 48px; display: flex; flex-direction: column; gap: 2px; }
+.proj-row {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  gap: 0 24px;
+  align-items: start;
+  padding: 24px 28px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  border-radius: 4px;
+  transition: border-color 0.18s, background 0.18s;
+  text-decoration: none; color: inherit;
+  position: relative;
+}
+.proj-row + .proj-row { margin-top: 2px; }
+.proj-row:hover { border-color: var(--blue); background: var(--bg3); }
+.proj-row:hover .proj-arrow { color: var(--blue); transform: translateX(4px); }
+
+.proj-num { color: var(--border); font-size: 12px; padding-top: 3px; }
+.proj-row:hover .proj-num { color: var(--blue); }
+
+.proj-title { font-size: 15px; font-weight: 500; color: var(--white); margin-bottom: 6px; }
+.proj-desc { font-family: 'Inter', sans-serif; font-size: 13px; color: var(--dim); line-height: 1.6; }
+.proj-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+.proj-tag {
+  font-size: 11px; padding: 2px 9px;
+  border: 1px solid var(--border); border-radius: 3px;
+  color: var(--dim);
+}
+.proj-tag.ai { color: var(--purple); border-color: rgba(188,140,255,0.3); }
+.proj-tag.web { color: var(--blue); border-color: rgba(121,192,255,0.3); }
+.proj-tag.py { color: var(--yellow); border-color: rgba(227,179,65,0.3); }
+.proj-tag.oss { color: var(--green); border-color: rgba(86,211,100,0.3); }
+
+.proj-meta { text-align: right; display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+.proj-arrow { color: var(--border); font-size: 18px; transition: all 0.18s; }
+.proj-status {
+  font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 10px;
+}
+.status-live { background: rgba(86,211,100,0.12); color: var(--green); border: 1px solid rgba(86,211,100,0.25); }
+.status-oss  { background: rgba(121,192,255,0.12); color: var(--blue); border: 1px solid rgba(121,192,255,0.25); }
+.status-wip  { background: rgba(227,179,65,0.12); color: var(--yellow); border: 1px solid rgba(227,179,65,0.25); }
+
+/* ── EXPERIENCE ── */
+.exp-list { margin-top: 48px; position: relative; }
+.exp-list::before {
+  content: '';
+  position: absolute; left: 7px; top: 8px; bottom: 8px;
+  width: 1px; background: var(--border);
+}
+.exp-item {
+  display: grid; grid-template-columns: 16px 1fr;
+  gap: 0 28px; margin-bottom: 48px;
+}
+.exp-dot {
+  width: 15px; height: 15px; border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  margin-top: 4px; flex-shrink: 0;
+  position: relative; z-index: 1;
+  transition: border-color 0.2s;
+}
+.exp-item:hover .exp-dot { border-color: var(--green); box-shadow: 0 0 10px rgba(86,211,100,0.4); }
+.exp-header { margin-bottom: 10px; }
+.exp-title { font-size: 15px; font-weight: 600; color: var(--white); }
+.exp-org { color: var(--cyan); font-size: 13px; }
+.exp-date { color: var(--dim); font-size: 11px; letter-spacing: 0.06em; margin-top: 2px; }
+.exp-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px; color: var(--fg); line-height: 1.7;
+  list-style: none;
+}
+.exp-body li { margin-bottom: 6px; padding-left: 16px; position: relative; }
+.exp-body li::before { content: '▸'; position: absolute; left: 0; color: var(--green); }
+
+/* ── CONTACT ── */
+#contact { text-align: center; }
+.contact-inner { max-width: 560px; margin: 0 auto; }
+.contact-prompt {
+  font-size: 13px; color: var(--dim); margin-bottom: 32px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.contact-prompt .ps { color: var(--green); }
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  margin-bottom: 40px;
+}
+.contact-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  text-decoration: none;
+  color: var(--fg);
+  background: var(--bg2);
+  font-size: 12px;
+  transition: all 0.18s;
+}
+.contact-item:hover { border-color: var(--cyan); color: var(--cyan); background: var(--bg3); }
+.contact-item .ci-icon { color: var(--dim); font-size: 14px; flex-shrink: 0; }
+.contact-item svg.ci-icon { width: 14px; height: 14px; display: block; }
+.contact-item:hover .ci-icon { color: var(--cyan); }
+.contact-item .ci-label { color: var(--dim); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; display: block; }
+.contact-item .ci-val { color: inherit; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 40px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 11px; color: var(--dim);
+  position: relative; z-index: 1;
+  flex-wrap: wrap; gap: 8px;
+}
+footer span { color: var(--green); }
+
+/* ── REVEAL ── */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal.in { opacity: 1; transform: none; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .hero-content { grid-template-columns: 1fr; }
+  .hero-map-panel { max-width: 100%; }
+}
+@media (max-width: 860px) {
+  nav { padding: 0 20px; }
+  .container { padding: 0 20px; }
+  .win-body { padding: 24px; }
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .skills-table { grid-template-columns: 1fr; }
+  .proj-row { grid-template-columns: 28px 1fr; }
+  .proj-meta { display: none; }
+  .contact-grid { grid-template-columns: 1fr; }
+  footer { padding: 20px; }
+  .stat-row { grid-template-columns: 1fr 1fr; }
+  .nav-links a span.key { display: none; }
+}
+@media (max-width: 560px) {
+  .hero-name { font-size: 2.2rem; }
+  .nav-links a { padding: 0 10px; font-size: 11px; }
+  .stat-row { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span class="prompt">hassan@portfolio</span><span style="color:var(--dim)">:</span><span style="color:var(--cyan)">~</span><span style="color:var(--dim)"> $</span>&nbsp;<span class="cursor"></span>
+  </a>
+  <div class="nav-links">
+    <a href="#about"><span class="key">01</span> about</a>
+    <a href="#skills"><span class="key">02</span> skills</a>
+    <a href="#projects"><span class="key">03</span> projects</a>
+    <a href="#experience"><span class="key">04</span> exp</a>
+    <a href="#contact"><span class="key">05</span> contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-window reveal">
+      <div class="win-bar">
+        <div class="dots">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+        </div>
+        <div class="win-title">hassan@portfolio: ~/home — zsh</div>
+      </div>
+      <div class="win-body">
+        <div class="hero-content">
+          <div class="hero-main">
+            <div class="hero-top">
+              <span class="hero-prompt">hassan@portfolio:~$</span>
+              <span class="hero-cmd">./introduce --verbose</span>
+            </div>
+
+            <h1 class="hero-name">
+              <span class="hl-green">Hassan</span> <span class="hl-blue">Rehman</span>
+            </h1>
+
+            <div class="hero-role">
+              <span class="tag">software-engineer</span>
+              <span class="tag">ai-researcher</span>
+              <span class="tag">creative-technologist</span>
+              <span class="tag">Dubai→ remote</span>
+            </div>
+
+            <p class="hero-bio">
+              I build <em>AI-powered tools</em> and expressive interfaces that live at the intersection of
+              software engineering and creative technology. Large language models, generative systems, and the kind of
+              developer tooling that makes other engineers say, <em>"oh, that's clever."</em>
+            </p>
+
+            <div class="hero-btns">
+              <a href="#projects" class="btn btn-green">▸ &nbsp;view_projects()</a>
+              <a href="#contact" class="btn btn-blue">✉ &nbsp;send_message()</a>
+            </div>
+          </div>
+
+          <div class="hero-map-panel reveal">
+            <div class="map-header"><span class="cmd">//</span> remote_work --map</div>
+            <div class="world-map-wrap">
+              <img class="world-map-img" src="world.svg" alt="Remote work locations worldwide">
+            </div>
+            <div class="map-legend">
+              <div class="map-legend-item"><span class="map-legend-dot home"></span><em>Dubai, UAE</em> — base</div>
+              <div class="map-legend-item"><span class="map-legend-dot work"></span><em>Lahore, PK</em> — team &amp; delivery</div>
+              <div class="map-legend-item"><span class="map-legend-dot client"></span><em>USA</em> — client engagements</div>
+              <div class="map-legend-item"><span class="map-legend-dot client-alt"></span><em>Latin America</em> — client engagements</div>
+              <div class="map-legend-item"><span class="map-legend-dot client"></span><em>Taiwan</em> — client engagements</div>
+              <div class="map-legend-item"><span class="map-legend-dot europe"></span><em>Europe</em> — client engagements</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="sec-label">about</div>
+    <div class="about-grid">
+
+      <div class="about-prose reveal">
+        <p>
+          I've always existed at an intersection — intelligent computation colliding with rigorous software engineering. Translating abstract AI capabilities into production-ready developer tooling is where I do the work I'm most proud of.
+        </p>
+        <p>
+          Currently focused on <strong>agentic frameworks and AI infrastructure that augment human output</strong> — building systems where LLMs behave less like oracles and more like thoughtful, contextual collaborators.
+        </p>
+        <p>
+          My practice bridges the gap between raw machine learning models and deterministic software engineering. The two fields inform each other more than most people expect.
+        </p>
+        <div class="stat-row">
+          <div class="stat-box">
+            <div class="stat-num">7<span>+</span></div>
+            <div class="stat-label">YEARS ENGINEERING</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">24<span>+</span></div>
+            <div class="stat-label">SHIPPED PROJECTS</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">12<span>+</span></div>
+            <div class="stat-label">AI SYSTEM SHIPPED</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">2<span>×</span></div>
+            <div class="stat-label">PUBLISHED PAPERS</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block reveal">
+        <div class="code-bar">
+          <div class="file-dot"></div>
+          about.py
+        </div>
+        <div class="code-body">
+<div><span class="ln">1</span><span class="k">class </span><span class="n">HassanRehman</span><span class="p">:</span></div>
+<div><span class="ln">2</span></div>
+<div><span class="ln">3</span>&nbsp;&nbsp;<span class="k">def </span><span class="n">__init__</span><span class="p">(self):</span></div>
+<div><span class="ln">4</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="v">self</span><span class="p">.</span><span class="n">name</span>     <span class="p">= </span><span class="s">"Hassan Rehman"</span></div>
+<div><span class="ln">5</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="v">self</span><span class="p">.</span><span class="n">role</span>     <span class="p">= </span><span class="s">"Sr. AI Solution Architect"</span></div>
+<div><span class="ln">6</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="v">self</span><span class="p">.</span><span class="n">location</span> <span class="p">= </span><span class="s">"Dubai→ remote"</span></div>
+<div><span class="ln">7</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="v">self</span><span class="p">.</span><span class="n">focus</span>    <span class="p">= [</span></div>
+<div><span class="ln">8</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"LLM systems"</span><span class="p">,</span></div>
+<div><span class="ln">9</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"generative AI"</span><span class="p">,</span></div>
+<div><span class="ln">10</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"creative tooling"</span><span class="p">,</span></div>
+<div><span class="ln">11</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">]</span></div>
+<div><span class="ln">12</span></div>
+<div><span class="ln">13</span>&nbsp;&nbsp;<span class="k">def </span><span class="n">currently</span><span class="p">(self):</span></div>
+<div><span class="ln">14</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">return </span><span class="p">{</span></div>
+<div><span class="ln">15</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"status"</span><span class="p">: </span><span class="s">"open to work"</span><span class="p">,</span></div>
+<div><span class="ln">16</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"editor"</span><span class="p">: </span><span class="s">"neovim"</span><span class="p">,</span></div>
+<div><span class="ln">17</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s">"coffee"</span><span class="p">: </span><span class="num">True</span><span class="p">,</span></div>
+<div><span class="ln">18</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="sec-label">skills</div>
+    <h2 style="font-size:1.5rem;color:var(--white);margin-bottom:4px;font-weight:600;">Tech stack</h2>
+    <p style="color:var(--dim);font-size:13px;">Languages, frameworks, and tools I reach for.</p>
+
+    <div class="skills-table reveal">
+
+      <div class="skill-col">
+        <div class="skill-col-head"><div class="dot-col" style="background:var(--yellow)"></div>languages</div>
+        <div class="skill-item"><span class="skill-name">Python</span><div class="skill-bar"><div class="skill-fill" style="width:95%;background:var(--yellow)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">TypeScript</span><div class="skill-bar"><div class="skill-fill" style="width:88%;background:var(--yellow)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Go</span><div class="skill-bar"><div class="skill-fill" style="width:70%;background:var(--yellow)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">SQL</span><div class="skill-bar"><div class="skill-fill" style="width:80%;background:var(--yellow)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Bash / Zsh</span><div class="skill-bar"><div class="skill-fill" style="width:85%;background:var(--yellow)"></div></div></div>
+      </div>
+
+      <div class="skill-col">
+        <div class="skill-col-head"><div class="dot-col" style="background:var(--purple)"></div>AI / ML</div>
+        <div class="skill-item"><span class="skill-name">PyTorch</span><div class="skill-bar"><div class="skill-fill" style="width:90%;background:var(--purple)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Transformers / HF</span><div class="skill-bar"><div class="skill-fill" style="width:88%;background:var(--purple)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">LangChain / RAG</span><div class="skill-bar"><div class="skill-fill" style="width:85%;background:var(--purple)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">LoRA / Fine-tuning</span><div class="skill-bar"><div class="skill-fill" style="width:78%;background:var(--purple)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Diffusion Models</span><div class="skill-bar"><div class="skill-fill" style="width:80%;background:var(--purple)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">ONNX / Inference</span><div class="skill-bar"><div class="skill-fill" style="width:72%;background:var(--purple)"></div></div></div>
+      </div>
+
+      <div class="skill-col">
+        <div class="skill-col-head"><div class="dot-col" style="background:var(--cyan)"></div>frontend + infra</div>
+        <div class="skill-item"><span class="skill-name">React / Next.js</span><div class="skill-bar"><div class="skill-fill" style="width:88%;background:var(--cyan)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">WebGL / Canvas</span><div class="skill-bar"><div class="skill-fill" style="width:70%;background:var(--cyan)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Docker / K8s</span><div class="skill-bar"><div class="skill-fill" style="width:78%;background:var(--cyan)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">AWS / GCP</span><div class="skill-bar"><div class="skill-fill" style="width:75%;background:var(--cyan)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">PostgreSQL</span><div class="skill-bar"><div class="skill-fill" style="width:82%;background:var(--cyan)"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Terraform</span><div class="skill-bar"><div class="skill-fill" style="width:65%;background:var(--cyan)"></div></div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="sec-label">projects</div>
+    <h2 style="font-size:1.5rem;color:var(--white);margin-bottom:4px;font-weight:600;">Selected work</h2>
+    <p style="color:var(--dim);font-size:13px;">Enterprise AI systems shipped across healthcare, insurance, and operations.</p>
+
+    <div class="projects-list reveal">
+
+      <div class="proj-row">
+        <span class="proj-num">01</span>
+        <div>
+          <div class="proj-title">JSS Command Center</div>
+          <div class="proj-desc">Architected an AI Command Center unifying ERP/CRM telemetry and automated Sales/Accounting workflows with QuickBooks integration. Built an NL chatbot for real-time operational and financial insights, computer vision pipelines with 97% accuracy for security alerts, and a cloud-native K8s multi-tenant alarm ingestion layer for scalable enterprise monitoring.</div>
+          <div class="proj-tags">
+            <span class="proj-tag ai">LLM Chatbot</span>
+            <span class="proj-tag ai">Computer Vision</span>
+            <span class="proj-tag web">Kubernetes</span>
+            <span class="proj-tag py">QuickBooks</span>
+          </div>
+        </div>
+        <div class="proj-meta">
+          <span class="proj-arrow">→</span>
+          <span class="proj-status status-live">lead architect</span>
+        </div>
+      </div>
+
+      <div class="proj-row">
+        <span class="proj-num">02</span>
+        <div>
+          <div class="proj-title">IOHealth</div>
+          <div class="proj-desc">Designed an AI-driven pipeline to extract and synchronize Homebase records into proprietary databases. Fine-tuned RapidOCR for Windows to eliminate manual reentry from handwritten care logs, and integrated HL7 FHIR standards for secure, fault-tolerant handling of sensitive medical records.</div>
+          <div class="proj-tags">
+            <span class="proj-tag ai">OCR</span>
+            <span class="proj-tag py">Python</span>
+            <span class="proj-tag ai">HL7 FHIR</span>
+            <span class="proj-tag web">Healthcare</span>
+          </div>
+        </div>
+        <div class="proj-meta">
+          <span class="proj-arrow">→</span>
+          <span class="proj-status status-live">lead architect</span>
+        </div>
+      </div>
+
+      <div class="proj-row">
+        <span class="proj-num">03</span>
+        <div>
+          <div class="proj-title">Ajentek — Turkish Voice AI</div>
+          <div class="proj-desc">Architected an advanced Turkish voice agent automating inbound telephony with sub-second NLU latency and real-time transcription. Optimized STT for regional dialects and sentiment analysis, with a scalable AWS backend and management dashboard — reducing manual follow-up effort by 70%.</div>
+          <div class="proj-tags">
+            <span class="proj-tag ai">Voice AI</span>
+            <span class="proj-tag ai">NLU / STT</span>
+            <span class="proj-tag web">AWS</span>
+            <span class="proj-tag py">NLP</span>
+          </div>
+        </div>
+        <div class="proj-meta">
+          <span class="proj-arrow">→</span>
+          <span class="proj-status status-live">architect</span>
+        </div>
+      </div>
+
+      <div class="proj-row">
+        <span class="proj-num">04</span>
+        <div>
+          <div class="proj-title">Auto XR — Medical Computer Vision</div>
+          <div class="proj-desc">Developed a YOLOv8-Pose system for automated detection and measurement of Lumbar Lordosis and Scoliosis from X-ray imagery. Engineered a medical-grade API supporting DICOM alongside PNG/JPEG, deployed serverless on AWS Lambda via API Gateway with Terraform and CI/CD pipelines.</div>
+          <div class="proj-tags">
+            <span class="proj-tag ai">YOLOv8</span>
+            <span class="proj-tag py">DICOM</span>
+            <span class="proj-tag web">AWS Lambda</span>
+            <span class="proj-tag web">Terraform</span>
+          </div>
+        </div>
+        <div class="proj-meta">
+          <span class="proj-arrow">→</span>
+          <span class="proj-status status-live">lead engineer</span>
+        </div>
+      </div>
+
+      <div class="proj-row">
+        <span class="proj-num">05</span>
+        <div>
+          <div class="proj-title">dAIsy — FDA-Cleared Medical AI</div>
+          <div class="proj-desc">Led DL pipeline development and statistical analysis for an FDA-cleared instance segmentation tool achieving 96% accuracy in vertebral CT analysis. Managed SageMaker and ECS deployment with Step Functions for 510(k)-tested clinical workflows, with rigorous IOU and Hausdorff distance validation across diverse demographics.</div>
+          <div class="proj-tags">
+            <span class="proj-tag ai">Deep Learning</span>
+            <span class="proj-tag web">SageMaker</span>
+            <span class="proj-tag web">ECS</span>
+            <span class="proj-tag oss">FDA 510(k)</span>
+          </div>
+        </div>
+        <div class="proj-meta">
+          <span class="proj-arrow">→</span>
+          <span class="proj-status status-oss">fda cleared</span>
+        </div>
+      </div>
+
+      <div class="proj-row">
+        <span class="proj-num">06</span>
+        <div>
+          <div class="proj-title">DHR Form Automation</div>
+          <div class="proj-desc">Deployed a HIPAA-compliant RAG framework using LLaMA 2 and AWS Bedrock within a closed VPC. Built a Hyperledger Fabric verification layer for immutable audit trails, and integrated PaddleOCR with custom CV models for signature and barcode verification via GPU-accelerated on-site inference.</div>
+          <div class="proj-tags">
+            <span class="proj-tag ai">RAG</span>
+            <span class="proj-tag ai">LLaMA 2</span>
+            <span class="proj-tag web">Bedrock</span>
+            <span class="proj-tag py">Hyperledger</span>
+          </div>
+        </div>
+        <div class="proj-meta">
+          <span class="proj-arrow">→</span>
+          <span class="proj-status status-live">lead engineer</span>
+        </div>
+      </div>
+
+      <div class="proj-row">
+        <span class="proj-num">07</span>
+        <div>
+          <div class="proj-title">CityTwig — Insurance Intelligence</div>
+          <div class="proj-desc">Architected an end-to-end Snowpark pipeline processing high-volume insurance datasets within Snowflake, reducing transformation latency. Deployed Power BI dashboards for executive policy-making with ML algorithms for risk assessment and predictive trend forecasting.</div>
+          <div class="proj-tags">
+            <span class="proj-tag py">Snowflake</span>
+            <span class="proj-tag ai">Snowpark</span>
+            <span class="proj-tag web">Power BI</span>
+            <span class="proj-tag ai">ML</span>
+          </div>
+        </div>
+        <div class="proj-meta">
+          <span class="proj-arrow">→</span>
+          <span class="proj-status status-live">data architect</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="sec-label">experience</div>
+    <h2 style="font-size:1.5rem;color:var(--white);margin-bottom:4px;font-weight:600;">Work history</h2>
+    <p style="color:var(--dim);font-size:13px;margin-bottom:0;">Where I've shipped things and what I learned doing it.</p>
+
+    <div class="exp-list reveal">
+
+      <div class="exp-item">
+        <div class="exp-dot"></div>
+        <div>
+          <div class="exp-header">
+            <div class="exp-title">Sr. AI Solution Architect & Technical Lead</div>
+            <div class="exp-org">CygnusTech Solution</div>
+            <div class="exp-date">SEP 2024 – PRESENT · DUBAI, UAE</div>
+          </div>
+          <ul class="exp-body">
+            <li>Directing a team of 7 engineers to deliver 5+ AI SaaS prototypes including Jobsite Sentry, resulting in multiple long-term contract conversions.</li>
+            <li>Serving as lead Pre-Sales Strategist by translating complex business requirements into technical roadmaps and blueprints to secure stakeholder buy-in.</li>
+            <li>Architecting Agentic AI systems with high-throughput AWS ingestion, delivering a 70% boost in lead gen and 20% gain in CV model accuracy.</li>
+            <li>Implementing Terraform-based IaC and CI/CD pipelines, accelerating release cycles by 40% while reducing cloud overhead by 25%.</li>
+            <li>Orchestrating technical discovery for global clients, maintaining a 90% satisfaction rate across the USA, UAE, and Latin America.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-dot"></div>
+        <div>
+          <div class="exp-header">
+            <div class="exp-title">AI Consultant & Pre-Sales</div>
+            <div class="exp-org">Zenthic</div>
+            <div class="exp-date">DEC 2025 – PRESENT</div>
+          </div>
+          <ul class="exp-body">
+            <li>Leading pre-sales engagements — conducting technical discovery, qualifying AI use cases, and delivering tailored solution proposals to enterprise prospects.</li>
+            <li>Advising clients on AI adoption strategy by assessing organizational readiness, identifying high-ROI automation opportunities, and defining phased implementation roadmaps.</li>
+            <li>Translating complex business requirements into solution architectures spanning agentic AI, computer vision, and NLP pipelines to secure stakeholder buy-in.</li>
+            <li>Partnering with delivery teams to scope POCs, estimate timelines, and align technical blueprints with client budgets and contract requirements.</li>
+            <li>Facilitating executive workshops and technical briefings to communicate feasibility, risk, and expected ROI for proposed AI initiatives.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-dot"></div>
+        <div>
+          <div class="exp-header">
+            <div class="exp-title">Senior AI Engineer & Technical Lead</div>
+            <div class="exp-org">Nextbridge, Limited</div>
+            <div class="exp-date">OCT 2018 – AUG 2024 · LAHORE, PAKISTAN</div>
+          </div>
+          <ul class="exp-body">
+            <li>Promoted from Intern Data Scientist to Lead AI Engineer for high-impact product delivery.</li>
+            <li>Orchestrated a 12-member AI department, implementing standardized MLOps practices that reduced overall development lifecycle time by 25%.</li>
+            <li>Developed and deployed deep learning models for healthcare vision (dAIsy, autoXR), achieving 96% accuracy and securing FDA 510(k) clearance while reducing diagnostic errors by 27%.</li>
+            <li>Optimized RAG frameworks and NLP algorithms, improving processing speeds by 40% and reducing extraction errors by 20% for document automation.</li>
+            <li>Established AI ethical guidelines and compliance frameworks, ensuring 95% alignment with HIPAA and industry-specific data privacy standards.</li>
+            <li>Engineered data-driven dashboards in Power BI and Snowpark to bridge the gap between raw data engineering and executive-level decision-making.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="sec-label" style="justify-content:center;">contact</div>
+      <h2 style="font-size:1.8rem;color:var(--white);margin-bottom:12px;font-weight:600;">Let's build something.</h2>
+      <div class="contact-prompt">
+        <span class="ps">hassan@portfolio:~$</span>
+        <span style="color:var(--blue)">open --new-tab mailto:rehmanhassan.ai@gmail.com</span>
+      </div>
+
+      <div class="contact-grid reveal">
+        <a href="mailto:rehmanhassan.ai@gmail.com" class="contact-item">
+          <span class="ci-icon">✉</span>
+          <div>
+            <span class="ci-label">email</span>
+            <span class="ci-val">rehmanhassan.ai@gmail.com</span>
+          </div>
+        </a>
+        <a href="https://github.com/HassanRehman11" class="contact-item" target="_blank" rel="noopener noreferrer">
+          <svg class="ci-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          <div>
+            <span class="ci-label">github</span>
+            <span class="ci-val">github.com/HassanRehman11</span>
+          </div>
+        </a>
+        <a href="https://linkedin.com/in/hassan119" class="contact-item" target="_blank" rel="noopener noreferrer">
+          <svg class="ci-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248C6.1 4.286 5.581 3.73 4.77 3.73c-.814 0-1.358.556-1.358 1.25 0 .694.544 1.248 1.358 1.248h.011zm10.276 8.212V9.359c0-2.216-1.184-3.247-2.764-3.247-1.274 0-1.845.705-2.165 1.193v-1.02h-2.4c.03.678 0 7.225 0 7.225h2.4v-4.037c0-.454.032-.91.664-.91.568 0 .648.444.648.902v4.045h2.385z"/>
+          </svg>
+          <div>
+            <span class="ci-label">linkedin</span>
+            <span class="ci-val">linkedin.com/in/hassan119</span>
+          </div>
+        </a>
+        <a href="tel:+971554560109" class="contact-item">
+          <svg class="ci-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.65.773a.678.678 0 0 1-.568-.049l-1.95-1.17a.678.678 0 0 1-.18-.18l-.773-2.65a.678.678 0 0 0-.122-.58L3.654 1.328z"/>
+          </svg>
+          <div>
+            <span class="ci-label">phone</span>
+            <span class="ci-val">+971554560109</span>
+          </div>
+        </a>
+      </div>
+
+      <p style="font-size:12px;color:var(--dim);">Open to freelance · full-time · research collaborations</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span style="color:var(--dim)">© 2026 <span>Hassan Rehman</span></span>
+  <span style="color:var(--dim)">Designed & coded by hand</span>
+  <span style="color:var(--dim)">Built with <span>♥</span> and too much coffee</span>
+</footer>
+
+<script>
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Stagger project rows
+  document.querySelectorAll('.proj-row').forEach((el, i) => {
+    el.style.transitionDelay = (i * 60) + 'ms';
+    el.classList.add('reveal');
+    obs.observe(el);
+  });
+  document.querySelectorAll('.exp-item').forEach((el, i) => {
+    el.style.transitionDelay = (i * 80) + 'ms';
+    el.classList.add('reveal');
+    obs.observe(el);
+  });
+
+  // Animate skill bars on scroll
+  const skillObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.skill-fill').forEach(bar => {
+          const w = bar.style.width;
+          bar.style.width = '0';
+          setTimeout(() => { bar.style.width = w; }, 100);
+        });
+        skillObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.skills-table').forEach(el => skillObs.observe(el));
+</script>
+</body>
+</html>
